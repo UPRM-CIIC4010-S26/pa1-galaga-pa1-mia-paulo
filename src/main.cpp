@@ -20,15 +20,13 @@ int main ()
 }
 
 	while (!WindowShouldClose()) {
-		BeginDrawing();
-		ClearBackground(BLACK);
-
-		Galaga.Update();
-		Galaga.Draw();
-		Galaga.KeyInputs();
-
-		EndDrawing();
-	}
+    Galaga.KeyInputs();
+    Galaga.Update();
+    BeginDrawing();
+    ClearBackground(BLACK);
+    Galaga.Draw();
+    EndDrawing();
+}
 
 	ImageManager::Unload();
 	SoundManager::Unload();

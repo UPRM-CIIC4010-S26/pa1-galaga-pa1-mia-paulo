@@ -17,8 +17,8 @@ Program::Program() {
         });
 
     for (int i = 0; i < 30; i++) {
-        float x = 250 + 50 * i;
-        float y = 200 + 50 * i;
+        float x = 250 + 50 * (i % 10);
+        float y = 200 + 50 * (i / 10);
 
         Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
             std::pair<float, float>{x, y}, 
@@ -56,9 +56,13 @@ void Program::Update() {
         }
 
         for (Projectile& p : Projectile::projectiles) { 
-            p.update(); 
-
-        }
+        p.update(); 
+        
+        if (p.ID == 1 && HitBox::Collision(player->hitBox, p.getHitBox())) {
+    PlayerReset();
+    p.del = true;
+}
+}
 
         if (lives <= 0 && pauseFrames <= 0) gameOver = true;
         Projectile::CleanProjectiles();
@@ -132,34 +136,34 @@ void Program::ManageEnemyRespawns() {
 void Program::DrawStartup() {
     DrawRectangle(0, 0, (float)GetScreenWidth(), (float)GetScreenHeight(), Color{0, 0, 0, 125});
     DrawText("Galaga", (GetScreenWidth() / 2 - 237), 75, 144, WHITE);
-    DrawText("Press Enter", (GetScreenWidth() / 2) - 75, GetScreenHeight() / 2, 24, GRAY);
+    DrawText("Press Space", (GetScreenWidth() / 2) - 75, GetScreenHeight() / 2, 24, GRAY);
 }
 
 void Program::DrawPauseScreen() {
     DrawRectangle(0, 0, (float)GetScreenWidth(), (float)GetScreenHeight(), Color{0, 0, 0, 125});
     DrawText("Paused", (GetScreenWidth() / 2) - 85, GetScreenHeight() / 2 - 60, 48, WHITE);
-    DrawText("Press Enter", (GetScreenWidth() / 2) - 75, GetScreenHeight() / 2, 24, GRAY);
+   DrawText("Press Space", (GetScreenWidth() / 2) - 75, GetScreenHeight() / 2, 24, GRAY);
 }
 
 void Program::DrawGameOver() {
     DrawRectangle(0, 0, (float)GetScreenWidth(), (float)GetScreenHeight(), Color{0, 0, 0, 125});
     DrawText("Game Over", (GetScreenWidth() / 2) - 380, 50, 144, WHITE);
-    DrawText("Press Enter", (GetScreenWidth() / 2) - 75, GetScreenHeight() / 2, 24, GRAY);
+    DrawText("Press Space", (GetScreenWidth() / 2) - 75, GetScreenHeight() / 2, 24, GRAY);
 }
 
 void Program::KeyInputs() {
-    if ((!gameOver && !startup && IsKeyPressed('P')) || (paused && IsKeyPressed(KEY_ENTER))) paused = !paused;
+    if ((!gameOver && !startup && IsKeyPressed('P')) || (paused && IsKeyPressed(KEY_SPACE))) paused = !paused;
     if (!paused && !startup && IsKeyPressed('O')) gameOver = !gameOver;
     if (!gameOver && !paused && IsKeyPressed('I')) startup = !startup;
     if (IsKeyPressed('H')) HitBox::drawHitbox = !HitBox::drawHitbox;
     
-    if (gameOver && IsKeyPressed(KEY_ENTER)) {
+    if (gameOver && IsKeyPressed(KEY_SPACE)) {
         gameOver = false;
         Reset();
     }
 
-    if (startup && IsKeyPressed(KEY_ENTER)) {
-        startup = false;
+    if (startup && IsKeyPressed(KEY_SPACE)) {
+    startup = false;
     }
 
     if (!startup && !paused && !gameOver && pauseFrames <= 0) player->keyInputs();
@@ -180,6 +184,7 @@ void Program::PlayerReset() {
 
 void Program::Reset() {
     Enemy::enemies.clear();
+    Projectile::projectiles.clear();
     StdEnemy::attackInProgress = false;
     player = new Player((GetScreenWidth() / 2) - 15, GetScreenHeight() * 0.75f);
     respawnCooldown = 1080;
@@ -187,4 +192,24 @@ void Program::Reset() {
     count = 0;
     delay = 0;
     lives = 3;
+
+    Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
+            std::pair<float, float>{350, 150}, 
+            new SpEnemy(350, 150)
+    });
+
+    Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
+            std::pair<float, float>{600, 150}, 
+            new SpEnemy(600, 150)
+    });
+
+    for (int i = 0; i < 30; i++) {
+        float x = 250 + 50 * (i % 10);
+        float y = 200 + 50 * (i / 10);
+
+        Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
+            std::pair<float, float>{x, y}, 
+            new StdEnemy(x, y)
+        });
+    }
 }
