@@ -63,6 +63,12 @@ void Program::Update() {
     p.del = true;
 }
 }
+    if (score >= nextLife) {
+        if (lives < 5) {
+            lives++;
+        }
+        nextLife += 1000;
+    }
 
         if (lives <= 0 && pauseFrames <= 0) gameOver = true;
         Projectile::CleanProjectiles();
@@ -197,6 +203,8 @@ void Program::Reset() {
     count = 0;
     delay = 0;
     lives = 3;
+    score = 0;
+    nextLife = 1000;
 
     Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
             std::pair<float, float>{350, 150}, 
