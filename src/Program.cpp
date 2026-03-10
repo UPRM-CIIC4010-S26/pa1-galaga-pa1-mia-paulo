@@ -81,6 +81,7 @@ void Program::Draw() {
                    Vector2{0, 0}, 0, WHITE);
     }
 
+    DrawText(TextFormat("Score: %i", score), 650, 10, 20, WHITE);
 
     for (Projectile p : Projectile::projectiles) p.draw();
     for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) if (p.second) p.second->draw();
