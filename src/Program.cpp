@@ -29,9 +29,10 @@ Program::Program() {
 
 void Program::Update() {
     for (Animation& a : Animation::animations) a.update();
-    for (int i = 0; i < Animation::animations.size(); i++) {
-        if (Animation::animations[i].done) Animation::animations.erase(Animation::animations.begin() + i);
-    }
+    for (int i = Animation::animations.size() - 1; i >= 0; i--) {
+    if (Animation::animations[i].done)
+        Animation::animations.erase(Animation::animations.begin() + i);
+}
     pauseFrames = std::max(pauseFrames - 1, 0);
 
     if (!startup && !paused && !gameOver && pauseFrames <= 0) {
