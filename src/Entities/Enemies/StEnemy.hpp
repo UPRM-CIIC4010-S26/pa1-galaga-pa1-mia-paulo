@@ -13,6 +13,7 @@ class StEnemy : public Enemy {
         StEnemy(float x, float y, bool newSpawn) : Enemy(x, y){
             this->cooldown = GetRandomValue(120, 600);
             this->spawning = newSpawn;
+            this->points = 300;
         }
 
         void draw() override;
