@@ -4,7 +4,7 @@
 #include "ImageManager.hpp"
 #include "Animation.hpp"
 #include <iostream>
-
+#include "SoundManager.hpp"
 class Enemy {
     protected:
         float angle = 90;
@@ -55,11 +55,13 @@ class Enemy {
                     for (Projectile& p2 : Projectile::projectiles) {
                         if (p2.ID != 1 && HitBox::Collision(p.second->hitBox, p2.getHitBox())) {
                             p.second->health--;
+                            PlaySound(SoundManager::hit);
                             p2.del = true;
-                        }
+}
                     }
 
                     if (p.second->health <= 0) {
+                        PlaySound(SoundManager::dead);
                         earnedScore += p.second->points;
                         Animation::animations.push_back(
                             Animation(p.second->position.first, p.second->position.second, 155, 0, 33, 33, 30, 30, 4, ImageManager::SpriteSheet)
