@@ -8,6 +8,7 @@ class StEnemy : public Enemy {
     public:
         StEnemy(float x, float y) : Enemy(x, y) { 
             this->cooldown = GetRandomValue(90, 600);
+            this->points = 300;
         }
 
         StEnemy(float x, float y, bool newSpawn) : Enemy(x, y){

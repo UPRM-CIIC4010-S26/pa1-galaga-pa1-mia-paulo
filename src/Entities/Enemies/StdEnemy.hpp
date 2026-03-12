@@ -21,6 +21,7 @@ class StdEnemy : public Enemy {
             this->cooldown = GetRandomValue(300, 1380);
             this->health = 2;
             this->spawning = newSpawn;
+            this->points = 100;
         }
 
         void draw() override;
