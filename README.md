@@ -22,3 +22,9 @@ If a partner has no commits in the repositories, they will receive a 0.
 
 ## Student Notes
 If you have any bonus specs, bonus or any details the TA's should know, you should include it here:
+
+## Build Instructions
+For Apple Silicon Macs, build the project with:
+make config=debug_arm64
+Then run the game with:
+./bin/Debug/pa1-galaga-pa1-mia-paulo
