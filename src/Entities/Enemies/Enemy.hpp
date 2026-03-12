@@ -55,8 +55,11 @@ class Enemy {
                     for (Projectile& p2 : Projectile::projectiles) {
                         if (p2.ID != 1 && HitBox::Collision(p.second->hitBox, p2.getHitBox())) {
                             p.second->health--;
-                            PlaySound(SoundManager::hit);
                             p2.del = true;
+
+                            if (p.second->health > 0) {
+                                PlaySound(SoundManager::hit);
+                            }
 }
                     }
 
